@@ -53,11 +53,14 @@ examples themselves
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >1.2.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.13.0 |
+| <a name="requirement_ansible"></a> [ansible](#requirement\_ansible) | ~> 1.3 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_ansible"></a> [ansible](#provider\_ansible) | 1.3.0 |
 
 ## Modules
 
@@ -65,13 +68,16 @@ No modules.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ansible_group.servers](https://registry.terraform.io/providers/ansible/ansible/latest/docs/resources/group) | resource |
+| [ansible_playbook.servers](https://registry.terraform.io/providers/ansible/ansible/latest/docs/resources/playbook) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_dummy"></a> [dummy](#input\_dummy) | dummy variable | `string` | n/a | yes |
+| <a name="input_inventory_path"></a> [inventory\_path](#input\_inventory\_path) | Path to the yaml file containing the inventory | `string` | n/a | yes |
 
 ## Outputs
 

@@ -1,0 +1,15 @@
+_.path = ['{{config_root}}/node_modules/.bin']
+
+[tools]
+terraform = "1.13.3"
+node = "22"
+
+"npm:semantic-release" = "latest"
+"npm:@semantic-release/changelog" = "latest"
+"npm:@semantic-release/commit-analyzer" = "latest"
+"npm:@semantic-release/release-notes-generator" = "latest"
+"npm:semantic-release-license" = "latest"
+"npm:@semantic-release/git" = "latest"
+"npm:@semantic-release/github" = "latest"
+
+[tasks]

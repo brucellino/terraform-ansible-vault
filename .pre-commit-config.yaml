@@ -18,21 +18,21 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
-      - id: terraform_tfsec
+      - id: terraform_trivy
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: v0.20.0
     hooks:
       - id: terraform-docs-go
         args: ["markdown", "--output-file", "README.md", "."]
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.3
+    rev: 0.34.0
     hooks:
       - id: check-github-actions
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.22.0
     hooks:
       - id: commitlint
-        additional_dependencies: ['@commitlint/config-conventional']
+        additional_dependencies: ["@commitlint/config-conventional"]
 
 ci:
-  skip: [terraform_fmt, terraform_validate, terraform_tfsec, commitlint]
+  skip: [terraform_fmt, terraform_validate, terraform_trivy, commitlint]

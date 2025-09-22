@@ -1,0 +1,16 @@
+- hosts: servers
+  become: true
+  user: rocky
+  tasks:
+    # Install task should take care of all of the directories for config and data
+    # As well as the vault user.
+    # Just to be sure, we assert their status later
+    - name: Install Vault
+      ansible.builtin.package:
+        name: vault
+        state: present
+    - name: Ensure Vault group
+      ansible.builtin.group:
+        name: vault
+        status: present
+        gid: "{{ vault.gid }}"
