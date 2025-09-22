@@ -1,0 +1,19 @@
+# Top level dict to contain cloudflared configuration.
+# Compile this if you're using Cloudflare tunnel to protect access to the service
+cloudflare:
+  enable: false # Exclude from configuration for now.
+# Top level dict to contain all vault configuration
+vault:
+  username: vault
+  uid: 984
+  group_name: vault
+  gid: 984
+  data_dir: /opt/vault # vault data will will live under /opt/vault. this should in principle be attached storage
+  config_dir: /etc/vault.d # Vault config lands in vault.d
+  storage:
+    type: raft
+    path: /opt/vault/raft
+  plugins:
+    enable: true
+    dir: /opt/vault/plugins
+    enabled_plugins: []

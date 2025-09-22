@@ -5,12 +5,92 @@
     # Install task should take care of all of the directories for config and data
     # As well as the vault user.
     # Just to be sure, we assert their status later
+    - name: Tunnel
+      when: "{{ cloudflare is defined or cloudflare.enable }}"
+      block:
+        - name: Install Cloudflared
+          debug:
+            msg: adding cloudflared
+        - name: Configure tunnel
+          debug:
+            msg: adding cloudflared
+
     - name: Install Vault
       ansible.builtin.package:
         name: vault
         state: present
     - name: Ensure Vault group
       ansible.builtin.group:
-        name: vault
-        status: present
+        name: "{{ vault.group_name }}"
+        state: present
         gid: "{{ vault.gid }}"
+        system: true
+    - name: Ensure Vault user
+      ansible.builtin.user:
+        name: "{{ vault.username }}"
+        state: present
+        uid: "{{ vault.uid }}"
+        groups: "{{ vault.group_name }}"
+    - name: Ensure Vault data directory
+      ansible.builtin.file:
+        path: "{{ vault.data_dir }}"
+        state: directory
+        owner: "{{ vault.username }}"
+        group: "{{ vault.group_name }}"
+        mode: "0755"
+    - name: Ensure Vault configuration file
+      ansible.builtin.template:
+        src: etc/vault.d/vault.hcl.j2
+        dest: "{{ vault.config_dir }}/vault.hcl"
+        owner: "{{ vault.username }}"
+        group: "{{ vault.group_name }}"
+        mode: "0644"
+        # We need to change the variable and block strings since the template contains
+        # {{ }} for HCL lookups
+        variable_start_string: "[["
+        variable_end_string: "]]"
+        block_start_string: "[%"
+        block_end_string: "%]"
+    - name: Configure Raft storage
+      when: "{{ vault.storage.type is defined and vault.storage.type == 'raft' }}"
+      block:
+        - name: Ensure Vault Storage location is present
+          ansible.builtin.file:
+            path: "{{ vault.storage.path }}"
+            state: directory
+            owner: "{{ vault.username }}"
+            group: "{{ vault.group_name }}"
+            mode: "0755"
+    - name: Configure Vault Plugins
+      when: "{{ vault.plugins is defined and vault.plugins.enable }}"
+      block:
+        - name: Ensure plugin directory
+          ansible.builtin.file:
+            path: "{{ vault.plugins.dir }}"
+            owner: "{{ vault.username }}"
+            group: "{{ vault.group_name }}"
+            state: directory
+            mode: "0777"
+
+    - name: Ensure Vault configuration directory
+      ansible.builtin.file:
+        path: "{{ vault.config_dir }}"
+        state: directory
+        owner: "{{ vault.username }}"
+        group: "{{ vault.group_name }}"
+        mode: "0755"
+    - name: Ensure systemd unit is present
+      ansible.builtin.template:
+        src: usr/lib/systemd/system/vault.service.j2
+        dest: /usr/lib/systemd/system/vault.service
+        owner: root
+        group: root
+      notify:
+        - systemd-reload
+  handlers:
+    - name: systemd-reload
+      ansible.builtin.systemd:
+        name: vault
+        daemon_reload: true
+        enabled: true
+        state: started
