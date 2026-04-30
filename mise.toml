@@ -1,7 +1,7 @@
 _.path = ['{{config_root}}/node_modules/.bin']
 
 [tools]
-terraform = "1.13.3"
+terraform = "1.15.0"
 node = "22"
 
 "npm:semantic-release" = "latest"
