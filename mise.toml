@@ -2,7 +2,7 @@ _.path = ['{{config_root}}/node_modules/.bin']
 
 [tools]
 terraform = "1.13.3"
-node = "22"
+node = "24"
 
 "npm:semantic-release" = "latest"
 "npm:@semantic-release/changelog" = "latest"
