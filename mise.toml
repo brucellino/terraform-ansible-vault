@@ -1,4 +1,4 @@
 [tools]
 terraform = "1.16"
-prek = "0.5.5"
+prek = "0.5.7"
 [tasks]
