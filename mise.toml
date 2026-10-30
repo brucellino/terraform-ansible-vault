@@ -1,4 +1,4 @@
 [tools]
-terraform = "1.16"
+terraform = "1.17.1"
 prek = "0.5.5"
 [tasks]
